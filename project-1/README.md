@@ -21,6 +21,10 @@ This Python script simplifies interactions with Google Sheets using the [gspread
 
   - example: `python3 cli.py main --spread_sheet=grocery_transactions1 --csv_data_path=./data/grocery_transactions.csv --worksheet_name=sheet2 --email=bestnyah7@gmail.com`
 
+output:
+      [Link to spread sheet](https://docs.google.com/spreadsheets/d/1V72ZrxvLukzT2r07LpbkhT0KE6vpj2gSPrsDTB5mcYk/edit?usp=sharing)
+
+
 #### Libraries used
 - fire: Python CLI creation.
 - google-auth: Google Cloud Platform authentication.
