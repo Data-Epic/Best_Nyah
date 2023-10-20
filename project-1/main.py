@@ -14,9 +14,23 @@ logging.basicConfig(
 )
 
 
+class DataPopulationError(Exception):
+    pass
+
+
+class NewSheetError(Exception):
+    pass
+
+
+class NewSpreadsheetError(Exception):
+    pass
+
+
 class Workbook:
-    #  initialize gspread connections 
-    def __init__(self, workbook_name: str, csv_file: Path, sheet_name: str, email: str) -> None:
+    #  initialize gspread connections
+    def __init__(
+        self, workbook_name: str, csv_file: Path, sheet_name: str, email: str
+    ) -> None:
         self.workbook_name = workbook_name
         self.csv_file = csv_file
         self.sheet_name = sheet_name
@@ -49,7 +63,7 @@ class Workbook:
         try:
             # create new workbook/spreadsheet
             self.sh = self.client.create(self.workbook_name)
-            
+
             # add email to share view/roles
             self.sh.share(self.email, perm_type="user", role="writer")
 
@@ -60,6 +74,7 @@ class Workbook:
 
         except Exception as e:
             logging.error(f"Error creating a new spreadsheet: {e}")
+            raise NewSpreadsheetError("Error creating a new spreadsheet") from e
 
     # create new work sheet from spreadsheet
     def create_new_sheet(self) -> None:
@@ -68,10 +83,10 @@ class Workbook:
                 self.sheet_name, self.df.shape[0], self.df.shape[1]
             )
             logging.info(f"New sheet '{self.sheet_name}' created successfully.")
-            return
 
         except Exception as e:
             logging.error(f"Error creating a new sheet: {e}")
+            raise NewSheetError("Error creating a new sheet") from e
 
     def populate_sheet_from_csv(self) -> None:
         try:
@@ -79,9 +94,12 @@ class Workbook:
             logging.info("Data populated in the sheet successfully.")
         except Exception as e:
             logging.error(f"Error populating sheet from CSV: {e}")
+            raise DataPopulationError("Error populating sheet from CSV") from e
 
 
-def main(spread_sheet: str, csv_data_path: Path, worksheet_name: str, email:str) -> None:
+def main(
+    spread_sheet: str, csv_data_path: Path, worksheet_name: str, email: str
+) -> None:
     wb = Workbook(spread_sheet, csv_data_path, worksheet_name, email)
     wb.create_new_spreadsheet()
     wb.create_new_sheet()
