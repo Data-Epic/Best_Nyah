@@ -56,7 +56,7 @@ class Workbook:
 
             logging.info("Connected to Google Sheets successfully.")
         except Exception as e:
-            logging.error(f"Could not connect to Google Sheets: {e}")
+            raise NewSpreadsheetError("Could not connect to Google Sheets") from e
 
     # create a new spread sheet & add email to share
     def create_new_spreadsheet(self) -> None:
@@ -73,7 +73,6 @@ class Workbook:
             return self.sh
 
         except Exception as e:
-            logging.error(f"Error creating a new spreadsheet: {e}")
             raise NewSpreadsheetError("Error creating a new spreadsheet") from e
 
     # create new work sheet from spreadsheet
@@ -85,7 +84,6 @@ class Workbook:
             logging.info(f"New sheet '{self.sheet_name}' created successfully.")
 
         except Exception as e:
-            logging.error(f"Error creating a new sheet: {e}")
             raise NewSheetError("Error creating a new sheet") from e
 
     def populate_sheet_from_csv(self) -> None:
@@ -93,7 +91,6 @@ class Workbook:
             set_with_dataframe(self.worksheet, self.df)
             logging.info("Data populated in the sheet successfully.")
         except Exception as e:
-            logging.error(f"Error populating sheet from CSV: {e}")
             raise DataPopulationError("Error populating sheet from CSV") from e
 
 
