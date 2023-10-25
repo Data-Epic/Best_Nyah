@@ -1,5 +1,8 @@
-fire
-google-auth
-gspread
-gspread-dataframe
-pandas
+fastparquet==2023.8.0
+fire==0.5.0
+google-auth==2.23.3
+gspread==5.11.3
+gspread-dataframe==3.3.1
+pydantic==2.4.2
+pandas==2.0.3
+pytest==7.4.2

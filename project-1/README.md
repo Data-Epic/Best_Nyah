@@ -31,3 +31,5 @@ output:
 - gspread: Google Sheets interaction.
 - gspread-dataframe: Google Sheets to pandas.
 - pandas: read csv file
+- pytest: for unit & integration tests
+- fastparquet: driver for parquet files
