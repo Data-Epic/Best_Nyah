@@ -6,3 +6,4 @@ gspread-dataframe==3.3.1
 pydantic==2.4.2
 pandas==2.0.3
 pytest==7.4.2
+python-decouple==3.8

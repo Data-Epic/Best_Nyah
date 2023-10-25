@@ -2,12 +2,11 @@
 from pathlib import Path
 from google.oauth2 import service_account
 from gspread_dataframe import set_with_dataframe
-from pydantic import BaseModel, Field, EmailStr
+from exceptions import *
 import gspread
 import pandas as pd
 import logging
 import subprocess
-
 
 
 # logging config
@@ -17,24 +16,8 @@ logging.basicConfig(
     handlers=[logging.StreamHandler()],
 )
 
-
-# Error handlers
-class DataPopulationError(Exception):
-    pass
-
-class NewSheetError(Exception):
-    pass
-
-class NewSpreadsheetError(Exception):
-    pass
-
-class DownloadDataError(Exception):
-    pass
-
-class PreprocessError(Exception):
-    pass
-
-
+CREDENTIALS_PATH = "./credentials.json"
+BASH_SCRIPT_PATH = "./extract.sh"
 
 
 class Workbook:
@@ -66,7 +49,7 @@ class Workbook:
         try:
             # google cloud platform API credentials
             creds = service_account.Credentials.from_service_account_file(
-                "./credentials.json", scopes=scope
+                CREDENTIALS_PATH, scopes=scope
             )
             # create API client
             self.client = gspread.authorize(creds)
@@ -83,7 +66,7 @@ class Workbook:
         """
 
         # bash script name
-        bash_script = "extract.sh"
+        bash_script = BASH_SCRIPT_PATH
 
         # bash positional arguments
         arguments = [f"{self.year}", f"{self.month}"]
@@ -100,7 +83,7 @@ class Workbook:
 
         # return downloaded file path
         return Path(download_path)
-    
+
     def download_data(self) -> None:
         """_summary_
             method to download ny taxi data
@@ -143,7 +126,7 @@ class Workbook:
     # create new work sheet from spreadsheet
     def create_new_sheet(self) -> None:
         try:
-            self.df =  pd.read_parquet(self.file_path).head(5000)
+            self.df = pd.read_parquet(self.file_path).head(5000)
 
             self.worksheet = self.sh.add_worksheet(
                 self.sheet_name, self.df.shape[0], self.df.shape[1]
@@ -208,4 +191,3 @@ def main(
     wb.create_new_sheet()
     wb.process_data()
     wb.populate_sheet_from_csv()
-    # wb.analytics()
