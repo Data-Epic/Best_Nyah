@@ -1,0 +1,5 @@
+fire
+google-auth
+gspread
+gspread-dataframe
+pandas
