@@ -2,11 +2,19 @@
 from pathlib import Path
 from google.oauth2 import service_account
 from gspread_dataframe import set_with_dataframe
-from exceptions import *
+from decouple import config
+from exceptions import (
+    DataPopulationError,
+    NewSheetError,
+    NewSpreadsheetError,
+    DownloadDataError,
+    PreprocessError,
+)
 import gspread
 import pandas as pd
 import logging
 import subprocess
+
 
 
 # logging config
@@ -16,8 +24,8 @@ logging.basicConfig(
     handlers=[logging.StreamHandler()],
 )
 
-CREDENTIALS_PATH = "./credentials.json"
-BASH_SCRIPT_PATH = "./extract.sh"
+CREDENTIALS_PATH = config("CREDENTIALS_PATH")
+BASH_SCRIPT_PATH = config("BASH_SCRIPT_PATH")
 
 
 class Workbook:
@@ -79,6 +87,8 @@ class Workbook:
             stdout=subprocess.PIPE,
         )
         script_output = result.stdout
+
+        # get dowloaded data path from bash run return message eg: "./data/ny_taxi_data_3.parquet"
         download_path = script_output.split("\n")[-2]
 
         # return downloaded file path
@@ -94,7 +104,6 @@ class Workbook:
             logging.info("begin downloading data!")
 
             self.file_path = self._run_bash_process()
-            print(self.file_path, type(self.file_path))
 
             logging.info("downloading data successful")
 
@@ -191,3 +200,4 @@ def main(
     wb.create_new_sheet()
     wb.process_data()
     wb.populate_sheet_from_csv()
+

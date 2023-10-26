@@ -4,6 +4,7 @@ from typing import List
 
 EXTRACT_SH_PATH = config("EXTRACT_SH_PATH")
 
+
 def subprocess_run(argument: List[str]) -> str:
     """_summary_
            This runs a bash script in a subprocess based on on the input arguments

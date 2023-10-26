@@ -15,7 +15,7 @@ def test_bash_arguments() -> None:
     Tests if bash file exists and is executable
     Tests bash script fails with bad arguments
     """
-    
+
     # test executable bash script
     assert os.path.isfile(EXTRACT_SH_PATH) and os.access(EXTRACT_SH_PATH, os.X_OK)
     assert os.path.exists(EXTRACT_SH_PATH)
@@ -26,8 +26,6 @@ def test_bash_arguments() -> None:
         result = subprocess_run(bad_argument)
 
         assert result.returncode == 1
-    
-
 
 
 @patch("subprocess.run")

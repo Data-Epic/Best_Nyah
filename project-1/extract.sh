@@ -9,7 +9,6 @@ fi
 year="$1"
 month="$2"
 
-echo "You entered: $year-$month"
 
 # ny taxi url
 data_url="https://d37ci6vzurychx.cloudfront.net/trip-data/yellow_tripdata_$year-0$month.parquet"

@@ -161,4 +161,4 @@ cython_debug/
 
 project-1/credentials.json
 project-1/test.py
-project-1/data/ny_taxi_data_2.parquet
+project-1/data/*.parquet
