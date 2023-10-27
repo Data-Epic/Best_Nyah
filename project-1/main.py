@@ -16,7 +16,6 @@ import logging
 import subprocess
 
 
-
 # logging config
 logging.basicConfig(
     level=logging.INFO,
@@ -134,6 +133,12 @@ class Workbook:
 
     # create new work sheet from spreadsheet
     def create_new_sheet(self) -> None:
+        """_summary_
+            Create a new worksheet from a limited number of rows from a Parquet file.
+
+        Raises:
+            NewSheetError: Raised when an error occurs while creating a new sheet.
+        """
         try:
             self.df = pd.read_parquet(self.file_path).head(5000)
 
@@ -146,6 +151,18 @@ class Workbook:
             raise NewSheetError("Error creating a new sheet") from e
 
     def process_data(self) -> None:
+        """_summary_
+            Preprocesses the data by performing the following steps:
+            - Makes a copy of the original data.
+            - Handles null values in the 'fare_amount' column by replacing them with the mean.
+            - Converts datetime columns to the datetime data type.
+            - Removes duplicated rows from the data.
+            - Filters out rides with 0 passengers.
+            - Renames columns for clarity.
+
+        Raises:
+            PreprocessError: Raised when an error occurs during data preprocessing.
+        """
         try:
             # make copy of Truth data
             self.processed_data = self.df.copy()
@@ -184,6 +201,12 @@ class Workbook:
             raise PreprocessError("could not preprocess data") from e
 
     def populate_sheet_from_csv(self) -> None:
+        """_summary_
+             Populates the Google Sheets worksheet with data from a processed DataFrame.
+
+        Raises:
+            DataPopulationError: Raised when an error occurs while populating the worksheet.
+        """
         try:
             set_with_dataframe(self.worksheet, self.processed_data)
             logging.info("Data populated in the sheet successfully.")
@@ -192,7 +215,11 @@ class Workbook:
 
 
 def main(
-    spread_sheet: str, worksheet_name: str, email: str, year: str, month: str
+    spread_sheet: str, 
+    worksheet_name: str, 
+    email: str, 
+    year: str, 
+    month: str
 ) -> None:
     wb = Workbook(spread_sheet, worksheet_name, email, year, month)
     wb.create_new_spreadsheet()
@@ -200,4 +227,3 @@ def main(
     wb.create_new_sheet()
     wb.process_data()
     wb.populate_sheet_from_csv()
-
