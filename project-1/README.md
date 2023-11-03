@@ -14,6 +14,9 @@ This Python script simplifies interactions with Google Sheets using the [gspread
 ## Process
 
 - create & activate virtual environment: `virtualenv venv && source venv/bin/activate`
+
+- create `.env` file for environment variables using `touch .env` 
+    - define `EXTRACT_SH_PATH` variable with is absolute path to `extract.bash` script
   
 - Install dependencies using `Make`:  `make install`
 
@@ -21,8 +24,11 @@ This Python script simplifies interactions with Google Sheets using the [gspread
 
   - example: `python3 cli.py main --spread_sheet=grocery_transactions1 --csv_data_path=./data/grocery_transactions.csv --worksheet_name=sheet2 --email=bestnyah7@gmail.com`
 
+## Test
+- **Unit Tests**: run with `make test`
+
 output:
-      [Link to spread sheet](https://docs.google.com/spreadsheets/d/1V72ZrxvLukzT2r07LpbkhT0KE6vpj2gSPrsDTB5mcYk/edit?usp=sharing)
+      [Link to spread sheet](https://docs.google.com/spreadsheets/d/1AkbhHTh-9HtWtNiGm4uEpJ3CTPv81f2CODeUkOkIGvs/edit?usp=sharing)
 
 
 #### Libraries used
@@ -31,3 +37,6 @@ output:
 - gspread: Google Sheets interaction.
 - gspread-dataframe: Google Sheets to pandas.
 - pandas: read csv file
+- pytest: for unit & integration tests
+- fastparquet: driver for parquet files
+- python-decouple: read env variables
